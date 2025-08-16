@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="vi">
+<head>
+.click-heart {
+  position: absolute;
+  width: 20px; /* Kích thước lớn hơn */
+  height: 20px;
+  background: linear-gradient(to bottom right, #ff007f, #ff8c00); /* Màu gradient */
+  transform: rotate(-45deg);
+  pointer-events: none;
+  z-index: 9999;
+  animation: floatMiniHeart 1.5s ease-out forwards; /  box-shadow: 0 0 8px rgba(255, 0, 127, 0.6); /* Hiệu ứng phát sáng */
+}
+.click-heart::before,
+.click-heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(to bottom right, #ff007f, #ff8c00);
+  border-radius: 50%;
+}
+.click-heart::before { top: -10px; left: 0; } /* Điều chỉnh vị trí cho kích thước mới */
+.click-heart::after  { left: 10px; top: 0; }
+
+@keyframes floatMiniHeart {
+  0% { transform: translateY(0) rotate(-45deg) scale(0.5); opacity:1; }
+  100% { transform: translateY(-80px) rotate(-45deg) scale(1.5); opacity:0; } /* Bay cao hơn, to hơn */
+}
+
+/* Hiệu ứng chạy cho hình ảnh trong train-cars */
+.train-cars {
+  white-space: nowrap; /* Giữ các hình ảnh trên một dòng */
+  overflow: hidden; /* Ẩn phần tràn ra ngoài */
+  position: fixed; /* Cố định vị trí */
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  box-sizing: border-box;
+  z-index: 1000; /* Đảm bảo nằm trên các nội dung khác */
+  background: linear-gradient(180deg,#fff8fb 0%, #f0fbff 100%); /* Giống body background */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.train-cars-inner {
+  display: inline-block; /* Để nội dung bên trong có thể chạy */
+  animation: scrollImages 30s linear infinite; /* Hiệu ứng chạy */
+  padding-right: 100%; /* Đảm bảo có khoảng trống để lặp lại mượt mà */
+}
+
+.train-cars img {
+  display: inline-block; /* Cho phép các hình ảnh nằm cạnh nhau */
+  padding: 0 10px; /* Khoảng cách giữa các ảnh */
+}
+
+@keyframes scrollImages {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* Chạy một nửa chiều rộng của nội dung lặp */
+}
+
+/* Sao băng */
+.shooting-star {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+  pointer-events: none;
+  z-index: 9998;
+  animation: shoot 3s linear forwards;
+  opacity: 0; /* Bắt đầu ẩn */
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px; /* Chiều dài vệt sao */
+  height: 4px;
+  background: linear-gradient(to right, transparent, white);
+  transform: translateX(-96px); /* Đẩy vệt sao ra sau */
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1; /* Hiện sao băng */
+  }
+  100% {
+    transform: translate(500px, 500px) rotate(45deg); /* Hướng bay */
+    opacity: 0;
+  }
+}
+
+/* Con trỏ chuột cute */
+body {
+  cursor: url('https://www.cursor.cc/cursor/cursor/400/Cute-Pink-Heart.cur'), auto; /* Sử dụng file .cur để tương thích tốt hơn */
+}
+
+/* Các style gốc */
+  :root{
+    --bg:#fff7fb;
+    --card:#ffffff;
+    --ink:#0f172a;
+    --muted:#6b7280;
+    --accent:#ff6bcb;
+    --accent-2:#7dd3fc;
+    --paper:#fffef2;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Times New Roman", Times, serif; /* Đổi font mặc định */
+    background:linear-gradient(180deg,#fff8fb 0%, #f0fbff 100%);
+    color:var(--ink); -webkit-font-smoothing:antialiased;
+    display:grid; place-items:center; padding:28px;
+  }
+
+  .wrap{width:min(920px,96vw)} /* Khôi phục chiều rộng wrap để chứa 2 cột */
+  header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .logo{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#ffd6f1);display:grid;place-items:center;color:#fff;font-weight:900;font-size:26px;box-shadow:0 8px 30px rgba(0,0,0,.08); font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho logo */
+  h1{margin:0;font-size:20px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho h1 */
+  header p{margin:0;color:var(--muted);font-size:13px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho header p */
+
+  .card{background:var(--card);border-radius:var(--radius);padding:14px;border:1px solid #f3e8f3;box-shadow:0 10px 30px rgba(99,102,241,0.06)}
+  .grid{display:grid; grid-template-columns:1fr 380px; gap:18px} /* Khôi phục 2 cột */
+  @media (max-width:920px){ .grid{grid-template-columns:1fr} } /* Responsive */
+
+  /* Compose area */
+  .compose h2{margin:0 0 8px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho tiêu đề */
+  .field label{display:block;font-weight:700;margin-bottom:6px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho label */
+  textarea{width:100%;min-height:200px;padding:12px;border-radius:12px;border:1px solid #ffe6f1;background:linear-gradient(180deg,#fff,#fffbff);font-size:15px;resize:vertical; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho textarea */
+  input[type="text"]{width:100%;padding:10px;border-radius:10px;border:1px solid #f3e6f7; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho input text */
+  .row{display:flex;gap:8px}
+  .small{font-size:13px;color:var(--muted); font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho small */
+
+  .controls{display:flex;gap:8px;align-items:center;margin-top:10px}
+  .btn{appearance:none;border:0;padding:10px 12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),#ffd6f1);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(255,107,203,0.18); font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho nút */
+  .btn.ghost{background:transparent;border:1px solid #efe0f2;color:var(--ink);box-shadow:none; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho nút ghost */
+  .btn.secondary{background:linear-gradient(90deg,var(--accent-2),#bfefff); font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho nút secondary */
+
+  .meta{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+  .tag{padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #ffe6f8;font-weight:700;color:#c026d3; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho tag */
+
+  /* preview & envelope - Khôi phục */
+  .preview {display:flex;flex-direction:column;gap:12px}
+  .envelope-wrap{display:grid;place-items:center;padding:18px}
+  .envelope{
+    width:260px;height:160px;border-radius:12px;background:var(--paper);border:1px solid #f0e6d6;position:relative;overflow:hidden;
+    box-shadow:0 12px 30px rgba(2,6,23,0.08);
+    transform-origin:center; transition:transform .25s ease;
+  }
+  .envelope .flap{position:absolute;left:0;right:0;top:0;height:70px;background:linear-gradient(180deg,#ffe6f8,#fff);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center}
+  .envelope .paper{position:absolute;left:12px;right:12px;top:36px;bottom:12px;border-radius:8px;padding:10px;overflow:auto;background:linear-gradient(180deg,#fff,#fffaf0);font-size:13px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho nội dung thư */
+  .theme-select{display:flex;gap:8px;flex-wrap:wrap}
+
+  .linkbox{display:none;} /* Ẩn hoàn toàn linkbox */
+  .tiny{display:none;} /* Ẩn hoàn toàn phần dán link */
+
+  /* cute confetti */
+  .confetti{position:fixed;left:10px;top:10px;pointer-events:none;opacity:.9}
+
+  /* message view - Vẫn giữ lại để hiển thị thư nếu có hash cũ */
+  .reader-wrap{display:grid;place-items:center;padding:22px}
+  .letter{width:min(720px,92vw);background:linear-gradient(180deg,#fffefc,#fff7f2);border-radius:12px;padding:26px;border:1px solid #f1e7da;box-shadow:0 30px 80px rgba(0,0,0,0.06)}
+  .letter .from{font-weight:800;color:#6b21a8; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho người gửi */
+  .letter .body{margin-top:12px;white-space:pre-wrap;line-height:1.6;font-size:16px; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho nội dung thư đọc */
+
+  /* warnings */
+  .warn{background:#fff4f4;border:1px solid #ffe4e6;padding:10px;border-radius:10px;color:#7f1d1d;font-weight:700; font-family: "Times New Roman", Times, serif;} /* Áp dụng font cho warn */
+
+  /* Cảm xúc hôm nay widget */
+  #daily-status-widget h2 {
+    font-family: "Times New Roman", Times, serif;
+    color: var(--accent); /* Màu hồng */
+  }
+  #status-display {
+    font-family: "Times New Roman", Times, serif;
+    color: var(--ink);
+  }
+  #status-input {
+    font-family: "Times New Roman", Times, serif;
+  }
+  #daily-status-widget button {
+    font-family: "Times New Roman", Times, serif;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  #daily-status-widget button:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+<!-- Nội dung chạy lặp -->
+<div class="train-cars">
+    <div class="train-cars-inner"> <!-- Thêm một div bọc để tạo hiệu ứng chạy lặp -->
+        <img src="https://syntheticfruits.neocities.org/gifs/train2.gif" alt="train" loading="lazy">
+        <img src="https://i.postimg.cc/Nf743NxK/fanlisting-ai-yazawa.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://i.postimg.cc/pdrvXV7p/my-button.png" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/kitty.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/mb_wave.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/banner_sanrio.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/hello-kitty-world.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://fatuus.org/kaiteng/kuvat/oldweb.png" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/HK.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/42.gif" alt="badge" loading="lazy">
+        <!-- Lặp lại các hình ảnh để tạo hiệu ứng chạy liên tục -->
+        <img src="https://syntheticfruits.neocities.org/gifs/train2.gif" alt="train" loading="lazy">
+        <img src="https://i.postimg.cc/Nf743NxK/fanlisting-ai-yazawa.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://i.postimg.cc/pdrvXV7p/my-button.png" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/kitty.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/mb_wave.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/banner_sanrio.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/hello-kitty-world.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://fatuus.org/kaiteng/kuvat/oldweb.png" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/HK.gif" alt="badge" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/icons/badgelink.png" alt="link" loading="lazy">
+        <img src="https://syntheticfruits.neocities.org/badges/42.gif" alt="badge" loading="lazy">
+    </div>
+</div>
+<div class="wrap">
+    <header style="display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;gap:12px;align-items:center">
+            <!-- Icon lá thư -->
+            <span style="font-size: 40px; color: var(--accent); margin-right: 10px;">&#128140;</span>
+            <h1 style="font-family: 'Times New Roman', Times, serif;">Thư đáng yêu</h1>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- LEFT: compose -->
+        <div class="card compose" id="composeCard">
+            <h2>Viết thư</h2>
+            <div class="field">
+                <label>Tên gì?</label>
+                <input type="text" id="from" placeholder="Ví dụ:xnhimeomeow " />
+            </div>
+            <div class="field" style="margin-top:8px">
+                <label>viết đi:<span class="small"></span></label>  
+                
+                <form id="msgForm" style="text-align:center;">
+                    <textarea id="message" placeholder="viết đi mòooo"
+                        style="width:90%;height:120px;border:2px solid pink;border-radius:12px;padding:10px;font-size:16px;">
+                    </textarea>
+                    <br><br>
+                    <button type="submit" 
+                        style="background-color:pink;color:white;font-family: 'Times New Roman', Times, serif;font-size:20px;
+                               border:none;padding:10px 25px;border-radius:25px;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                        💌 gửi rồi không gỡ đc đâu á nha
+                        <style>
+                            button {
+                                background-color: pink;
+                                color: white;
+                                font-family: 'Times New Roman', Times, serif; /* Đổi font cho nút */
+                                font-size: 20px;
+                                border: none;
+                                padding: 10px 25px;
+                                border-radius: 25px;
+                                cursor: pointer;
+                                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                                transition: transform 0.2s ease;
+                            }
+
+                            /* Hiệu ứng hover đáng yêu: nút “nhảy nhịp” */
+                            button:hover {
+                                transform: scale(1.1) rotate(-3deg);
+                            }
+                        </style>
+                    </button>
+                </form>
+
+                <script>
+                    const API_URL = "https://script.google.com/macros/s/AKfycbx0jBspLvcUbgiFYFQOaxtCVygB-RFBES0l7lSgcuwxUOnihE9sA8oPM76AOlCfjoD_Pw/exec"; // Đảm bảo URL này hợp lệ và đã được triển khai đúng cách trên Google Apps Script
+
+                    function createHeart(x, y) {
+                        const heart = document.createElement('div');
+                        heart.className = 'click-heart'; // Sử dụng class click-heart đã định nghĩa trong CSS
+                        heart.style.left = x + 'px';
+                        heart.style.top = y + 'px';
+                        document.body.appendChild(heart);
+                        setTimeout(() => heart.remove(), 1500); // Thời gian khớp với animation CSS
+                    }
+
+                    // Thêm sự kiện click cho body để tạo nhiều trái tim
+                    document.body.addEventListener('click', function(e) {
+                        const numHearts = Math.floor(Math.random() * (4 - 3 + 1)) + 3; // 3 hoặc 4 trái tim
+                        for (let i = 0; i < numHearts; i++) {
+                            // Tạo vị trí ngẫu nhiên gần vị trí click
+                            const offsetX = (Math.random() - 0.5) * 40; // +/- 20px
+                            const offsetY = (Math.random() - 0.5) * 40; // +/- 20px
+                            createHeart(e.clientX + offsetX, e.clientY + offsetY);
+                        }
+                    });
+
+                    // Gắn sự kiện submit cho form
+                    document.getElementById("msgForm").addEventListener("submit", function(event) {
+                        event.preventDefault(); // Ngăn chặn hành vi submit mặc định của form
+
+                        let msg = document.getElementById("message").value.trim();
+                        if (!msg) {
+                            alert("viết đi mới cho gửi!!!");
+                            return;
+                        }
+
+                        fetch(API_URL, {
+                            method: "POST",
+                            body: JSON.stringify({ message: msg })
+                        })
+                        .then(res => res.text())
+                        .then(data => {
+                            alert("💖 gửi rồi cục dàng!!");
+                            document.getElementById("message").value = ""; // Xóa nội dung sau khi gửi thành công
+                        })
+                        .catch(err => alert("❌ Lỗi khi gửi thư: " + err)); // Thông báo lỗi rõ ràng hơn
+                    });
+                </script>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <div></div>
+                <div style="margin-left:auto"></div>
+            </div>
+            <!-- resultArea và linkbox đã bị ẩn/xóa -->
+            <div style="margin-top:10px" id="resultArea" hidden>
+                <div class="linkbox card" style="padding:12px"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:12px" class="tiny"></div>
+    </div>
+
+    <!-- RIGHT: preview (đã khôi phục) -->
+    <div class="card preview">
+        <h2>Xem trước thư</h2>
+        <div class="envelope-wrap">
+            <div class="envelope" id="envelope">
+                <div class="flap"></div>
+                <div class="paper" id="paperBody">Nội dung sẽ hiển thị ở đây khi bạn xem trước thư.</div>
+                <div class="from" id="paperFrom">—</div>
+            </div>
+        </div>
+        <div class="theme-select" id="themes">
+            <button class="btn ghost" data-theme="pink">Hồng</button>
+            <button class="btn ghost" data-theme="blue">Xanh dương</button>
+            <button class="btn ghost" data-theme="mint">Xanh mint</button>
+            <button class="btn ghost" data-theme="paper">Giấy</button>
+        </div>
+        <div class="controls">
+            <button class="btn" id="btnPreview">Xem trước</button>
+            <!-- Nút "Tạo link ẩn danh" đã bị xóa -->
+        </div>
+
+        <!-- resultArea và các nút liên quan đến link đã bị ẩn/xóa -->
+        <div style="margin-top:10px" id="resultArea" hidden>
+            <div class="linkbox card" style="padding:12px">
+                <div class="link" id="shareLink"></div>
+                <div class="row">
+                    <!-- Các nút sao chép/mở link đã bị xóa -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần "Dán link thư vào đây" đã bị ẩn -->
+        <div style="margin-top:12px" class="tiny" hidden>
+            <p>Dán link thư bạn nhận được vào đây để đọc:</p>
+            <input type="text" id="openLink" placeholder="Dán link thư vào đây..." />
+            <button class="btn ghost" id="btnOpenLink" style="margin-top:8px">Mở thư</button>
+        </div>
+    </div>
+
+    <!-- messageView vẫn được giữ lại để hiển thị thư nếu có hash trong URL (từ link cũ) -->
+    <div style="margin-top:12px" id="messageView" hidden>
+        <div class="letter">
+            <div class="from" id="viewFrom">—</div>
+            <div class="body" id="viewBody"></div>
+            <div style="margin-top:12px;display:flex;gap:8px">
+                <button class="btn ghost" id="btnCopyText">Sao chép nội dung</button>
+                <button class="btn ghost" id="btnDownload">Tải .txt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="lowerbar-wrapper">
+    <div class="lowerbar section" id="lowerbar2">
+        <div class="widget HTML" data-version="2" id="HTML16">
+            <h3 class="title"></h3>
+            <div id="updates-text1" style="display:none">
+                <div class="toybox">
+                    <div class="tbinner">
+                        <br>
+                        <a href="https://foollovers.com/" target="_blank"><img src="https://pastelhello.com/pixelart/toyboxbottomlg.png" style="width: 100%;" loading="lazy"></a>
+                    </div>
+                    <style>
+                        .tbinner {
+                            flex-direction: column;
+                            position: relative;
+                            border-left: 2px solid #5f2403;
+                            border-right: 2px solid #5f2403;
+                            padding: 3px;
+                            border-radius: 0px;
+                            overflow-y: auto;
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-top: -25px;
+                        }
+                        /* 'silkscreen' font */
+                        @font-face {
+                            font-family: 'Silkscreen';
+                            src: url('https://dl.dropboxusercontent.com/s/l0frac4d7bz3zx6/silkscreen.ttf') format('truetype');
+                            font-display: swap;
+                        }
+                        /* colors */
+                        :root {
+                            --Speech-Bubble-Border:#222;
+                            --Speech-Bubble-Background:#fcfcfc;
+                            --Speech-Bubble-Text:#000;
+                        }
+                        #speech-bubble {padding-top: 54px; width:80px;float: right;}
+                        #bub-part-a {margin-left:6px; width:calc(100% - 12px); height:2px; background:var(--Speech-Bubble-Border);}
+                        #bub-part-b {margin-left:4px; width:calc(100% - 12px); height:2px; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #bub-part-c {margin-left:2px; width:calc(100% - 8px); height:2px; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #speech-txt {width:calc(100% - 24px); padding:10px; font-family:silkscreen; font-size:9px; color:var(--Speech-Bubble-Text); text-align:center; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #speech-arrow {margin-top:-2px; margin-left:50px;padding-bottom: 5px;}
+                        #arrow-w {width:8px; height:8px; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #arrow-x {width:6px; height:2px; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #arrow-y {margin-left:-2px; width:6px; height:2px; background:var(--Speech-Bubble-Background); border-left:2px solid var(--Speech-Bubble-Border); border-right:2px solid var(--Speech-Bubble-Border);}
+                        #arrow-z {margin-left:-2px; width:8px; height:2px; background:var(--Speech-Bubble-Border);}
+                    </style>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="lowerbar-wrapper">
+    <div class="lowerbar section" id="lowerbar3">
+        <div class="widget HTML" data-version="2" id="HTML17">
+            <h3 class="title"></h3>
+            <!-- Firebase SDKs -->
+            <script type="module">
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+                import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyDPbRJz3V-DW_rS6qWe4lxoUzQ4kdXALR8",
+                    authDomain: "kristan-b04cc.firebaseapp.com",
+                    databaseURL: "https://kristan-b04cc-default-rtdb.firebaseio.com",
+                    projectId: "kristan-b04cc",
+                    storageBucket: "kristan-b04cc.appspot.com",
+                    messagingSenderId: "519771746844",
+                    appId: "1:519771746844:web:81f68ca679e35dda84a5d9",
+                    measurementId: "G-KSB1LL0VB8"
+                };
+
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                const db = getDatabase(app);
+
+                function saveStatus() {
+                    const content = document.getElementById("status-input").value.trim();
+                    if (content === "") {
+                        alert("Vui lòng nhập trạng thái trước khi lưu.");
+                        return;
+                    }
+
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString("vi-VN", { hour: '2-digit', minute: '2-digit' });
+                    const dateKey = now.toISOString().split('T')[0]; // yyyy-mm-dd
+
+                    set(ref(db, 'statuses/' + dateKey), {
+                        text: content,
+                        time: timeStr
+                    }).then(() => {
+                        document.getElementById("status-text").textContent = content;
+                        document.getElementById("status-time").textContent = "Cập nhật lúc: " + timeStr;
+                        document.getElementById("status-input").value = "";
+                    }).catch((error) => {
+                        alert("Lỗi khi lưu trạng thái: " + error.message);
+                    });
+                }
+
+                function loadStatus() {
+                    const now = new Date();
+                    const dateKey = now.toISOString().split('T')[0];
+                    const statusRef = ref(db, 'statuses/' + dateKey);
+
+                    onValue(statusRef, (snapshot) => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.val();
+                            document.getElementById("status-text").textContent = data.text;
+                            document.getElementById("status-time").textContent = "Cập nhật lúc: " + data.time;
+                        } else {
+                            document.getElementById("status-text").textContent = "ví dụ: đang buồn ngủ";
+                            document.getElementById("status-time").textContent = "Chưa có cập nhật...";
+                        }
+                    });
+                }
+
+                document.addEventListener("DOMContentLoaded", loadStatus);
+
+                // Đưa hàm saveStatus ra global để button có thể gọi
+                window.saveStatus = saveStatus;
+            </script>
+        </div>
+    </div>
+</div>
+<div style="clear: both;"></div>
+<div class="stump" style="margin: auto; text-align: center; width: 80%;padding-top:20px">
+    <img src="https://64.media.tumblr.com/1cc91bb3f8b2de73b204291c4f5654a8/987062f5f461ebd0-65/s75x75_c1/d9b77a9f3b493cf40880115d43e27ae5b201fe78.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/2d1572a915683293339f79841c5284f2/979aeaa541231801-a6/s75x75_c1/222759d7de730cf8c1456297d9d9f8b4f7eec5ee.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/faba5e957c0cfc5c2aac7dd5f2c91d7a/979aeaa541231801-2a/s75x75_c1/ee3d7cd2fa3e9df6a43b1044ca05fb4e655ed9e3.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/ac923dd020a38f0e610e1050df8a1d27/b97ab8322066f2d9-84/s75x75_c1/b4d6ea7f6446c605776e8d07cd478af605fdaa8d.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/4e86ac2609a822fcc0d27b8eb2ff7904/979aeaa541231801-fa/s75x75_c1/572dc7f4234698beac69108dac3c802eaf0823c7.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/7db5dd165e40a3fc5c128d6377c26a67/c89ba57f71bb65f2-31/s75x75_c1/4b8992ec9eae0636bef771633854874f5006257a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/ee91a1894a75d08a5a11ce3ef7dd5c64/c89ba57f71bb65f2-43/s75x75_c1/a9090c2d93582c740f9b52011684298ea64dc1b9.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/24f920762947a80d0373bc23e57af2fe/082497a4202676db-55/s75x75_c1/bee3b5e34b556b8a55f9ecd91a731aa7e4e7012d.gifv" loading="lazy">
+    <img src="https://i.ibb.co/5kt29Nx/angry.gif" loading="lazy">
+    <img src="https://64.media.tumblr.com/b15665fbf88dead7e985e34eb0634db8/4976d92061e98e5d-cc/s75x75_c1/ece03d39c242659691081bbf0447f74719818356.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/99e3c51ed5f489b2217da7ff24636200/2f02271765a8387c-a8/s75x75_c1/574260c4f7b8bb4990445c1b08ad14960a70a4ac.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/632332fd6ad660f1444881925b084546/2f02271765a8387c-83/s75x75_c1/f73dbf558481484098af9e477eed28d6ff03c26a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/eef5af4b06b1aa82173751f036d09b1a/4807c291688ea661-fd/s75x75_c1/3a04db463f5cb9809b19060b752732580e236975.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/818914dbdf122e2fd6713a0af046a5ff/7e96d1a0af9ae30c-51/s75x75_c1/50c4436619643e421cd6afefb5da5b820150b875.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/31daa32599bb8da3705d1570ea306c97/979aeaa541231801-2a/s75x75_c1/77796e02f78db1626350e4cf5aebf2b8a479751b.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/d6eb0b1ebb2c9b873e0f609c5d9a6837/92383c66d85eccb2-39/s75x75_c1/4d2e7eb2abaefb5edb59c8e5d0cffd27a525979a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/0e45cb2d96b378c33d7bb6d9140212c2/1368474692bf0fc5-18/s75x75_c1/f69f4f92ffea0881acde6f5eea7eef7b4bddcd2c.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/73dd55c97fdb76554dbbf4f9a83bbe88/a79b42d6e6497adf-2b/s75x75_c1/6ce68eebc0cdf14fb3c3bf60b3d489b2d6cacb36.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/ea681c6ca547eedfcca2bd63e2ef0a98/92383c66d85eccb2-3d/s75x75_c1/70642cc3024f5b1f32c60d60fcbcea2e5b1faf8e.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/5f2644b56aa977f44dd5485b19582a1b/ce5121589d9f3d6a-74/s75x75_c1/ae67eb9e649f5caf4f374e2a903a9a25bc02683d.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/ed05328fd20b1d4b5d58e2298bf28bcc/3c9e8b81b4e14f49-8f/s75x75_c1/cd7b77b588e7e28f9ac0a0e66bb63df92cab224a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/440c20d9756f8472dfa26b934fda25e7/81e5b4b88f8486d1-2d/s75x75_c1/9f9c279a7e1beac8df6cd0cda371109ecf9011e1.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/ef0a29779e5275263db1c1499d8b676d/e01c1e101a3c4d28-55/s75x75_c1/e9c46e5f81b7cd539af6fe4680c710fbe4e89df5.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/9068b1f4f01082aa11a4d737be2de87c/e01c1e101a3c4d28-4e/s75x75_c1/b0ecd87241a7c60beffe5e39eaa6f86344d1c5df.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/d213c61780ea58904f1a2973d748aeda/e01c1e101a3c4d28-e7/s75x75_c1/b6b179cf3bd63b1798e392b324d7d5e853bef1ba.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/70e9a4ac8937ab7dbba96776586b460c/678c77eb86c8b6bc-21/s75x75_c1/35d26af2b43cbd937e2ec02de391cc80ca198fd2.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/30923afd9eaf1f86d9050f7dd79f45c5/0411473bcd79881f-7e/s75x75_c1/7ae6ce05336d774f51b28b316860759fc247a924.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/a3d0947ce1faca8b7133b81650c4ea1c/5d758e6be7ba86e3-f2/s75x75_c1/25ac75dcf0b3fc57d7e6d06482ec166da80bbaa1.gifv" loading="lazy">
+    <img src="https://i.ibb.co/LhpYgjZ/me-after-i-do-anything-out-of-bed.gif" loading="lazy">
+    <img src="https://64.media.tumblr.com/bd5aa36ff5c5df994cc9226aa0b0ae3a/2bbe623b43415f63-71/s75x75_c1/9adacfc32027511765a956e7929062a5306c2b74.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/60e4513c97627086af5ba5fd0969be94/2e66fb9713eb118b-b2/s75x75_c1/67a92fc8d32a546d6b4c0e667e0a36c640751b7c.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/55f2750bc4994e9ffe952fd005131c6c/1749093df60e89e1-2d/s75x75_c1/9308cdbc7d8265eb43e5e7ba5c2e1d9e804aa9e2.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/7f04dceb5ef4a5e848ee3417b2d4de7c/1ab29305505ccc17-ec/s75x75_c1/dccf66b352c72235e2b49fbcf5c06ee4d947161a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/bce886100d12fe42bf2ef08f1949f22d/e58b3b918bcbc820-a1/s75x75_c1/0a726a917c6a8e620326233665235e3000723f2b.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/d0b97d4e6bf84c967ee62734f31aa7a6/cd30ff3c9008ddf5-51/s75x75_c1/7c59c1503bb0aec59694e3b7b1bb196331a341b6.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/2c8e3861090f354e38a2ca961adcbc88/9c3ccc4f55a6857e-09/s75x75_c1/7b12d7cc8c7d6a8ffd10dcd3ade8e37e7a1df9db.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/a6b774cbe8da5e126fe3cd6b3d866166/347d393441fe52fd-ba/s75x75_c1/0f24fb99dd8c0846ad283a1a393d7cda9dcb6a4b.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/a397167b4783e0dfa1abed5d3e7280e6/4158478c4cb0744e-9d/s75x75_c1/8b18dd3fe6ee9c52443da8b23ae26a523f51ab0f.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/773986491ce0e8514dee49a66c1bb85f/5b6f75a9fd65b017-62/s75x75_c1/1f1ea2edf8cf8223f34355cd19ecfadc1ff3089e.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/739c905529b85d7a447c1d9417be9031/71aec164eff35337-b5/s75x75_c1/72f0b8e2bdc2f7885117e0858cd1c9358a2a2dfe.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/2d75e990216f6ed40d9c6767de0111bf/92383c66d85eccb2-89/s75x75_c1/b2eb41bc333e641246c18aa90c23ab1f9da90b01.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/bd41a0d76744fd32173013605e23a825/ae3b6a71b52f8360-11/s75x75_c1/094c41697cc65b940e94d10652e47ea71bc9f784.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/5fceb4e9cb1339727d5c9fb31a7730f7/ae3b6a71b52f8360-a3/s75x75_c1/8a05d521a3b76486a952f9d0c275bfb70b839fb5.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/c7e4a505a9a51b2e580b8148b749d76a/ae3b6a71b52f8360-1b/s75x75_c1/4d9b25cc168143ad87a18dad38d33ac4da78eab7.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/c5bff628b7c7bec507ee809415bf1d21/cc1c5cf08c16da6b-9d/s75x75_c1/b29729e873eea3ef7de00e6f6fe82c90b4039a85.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/c6a8bec39ee8ac288c3f7cfdcaec6e79/7ed5211ff0ba8d69-3b/s75x75_c1/bc3b042e2d9b54ebea9e1569653b7873cb5eb40c.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/286866ef622fd056ea852e4ed819cbdd/cdc874ae64a3ea91-85/s75x75_c1/538d700b4131c7df813f1be556098201fda4f597.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/3d1eca876cd4dadbf7cc640490526305/ba553a9c91eba651-cd/s75x75_c1/7506959c7cf5d480b1f23100c80185c45a23e0db.pnj" loading="lazy">
+    <img src="https://64.media.tumblr.com/13ba8e64b526681449ace00eb16665b3/9eaee803aef0a3fb-5e/s75x75_c1/7f085656e705231d1b2786980c996b0a6bad6d00.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/a925b0200bd91692518a6550244983be/afcc3cab9de29101-60/s75x75_c1/924ab7c7274947dccae6d3b6f359a2e3ab4c6468.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/b2172a3a1d763b0c55b38c17d59c5a70/0c6469ec32ff476a-51/s75x75_c1/70ef68ed38a2bfb0b5385d4fc5c6737a59d8c619.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/56c87e92d642ccce1a5df729606ba2fd/f83f0f77a4443e4a-ae/s75x75_c1/3c8b8dbd5317f3ba052601adfc79281906f0a54e.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/59c680f0b715640fdc13d0b8748e8d97/f83f0f77a4443e4a-6c/s75x75_c1/7e106f45f5e406b350eddf0ed48514d74acef87a.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/93cbccdce117b3d8f4b7d52d1cab1984/b212a979ffe31048-00/s75x75_c1/37d9b853fa774ea13d57a9ae193c4300e96f0b45.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/3484b1feee5c9607007ff813ea604471/72b89b663e36a23a-d8/s75x75_c1/6506b2504c7513257f430d9783e3dcdb9082ec37.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/8e99cdd8868d1a1e5e5bb0ab3626a6b1/f4baa8b1204ef7e4-60/s75x75_c1/ae7720110404649394cfbe7b4b959e8dd53f2234.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/b92745b17af88040cd20ac3b563d13c6/ce5121589d9f3d6a-6d/s75x75_c1/8d228385dce66eae434c94e4b884a544c052ff1f.gifv" loading="lazy">
+    <img src="https://64.media.tumblr.com/69cce6a1b4fa0319facf0d1e3c1870c2/a2ae450d1dcd6545-3b/s75x75_c1/ec791a5c2ad1f813b47adc2886107a4e7fed12a9.gifv" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat80.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat157.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat79.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat372.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat524.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat395.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat74.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat68.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat148.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat257.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat75.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat438.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat76.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat175.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat52.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat158.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat159.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat276.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat69.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat404.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat430.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat224.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat226.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat242.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat243.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat281.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat287.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat305.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat307.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat442.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat457.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat145.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat219.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat220.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat402.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat344.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat350.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat381.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat26.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat289.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat221.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat222.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat227.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat230.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat233.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat234.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat236.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat225.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat228.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat235.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat316.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat317.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat318.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat319.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat320.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat321.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat322.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat323.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat324.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat325.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat326.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat327.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat311.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat312.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat313.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat314.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat315.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat455.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat118.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat119.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat120.png" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat373.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat426.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat245.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat495.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat509.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat518.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat510.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat571.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat511.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat512.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat513.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat514.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat515.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat516.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat517.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat570.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat519.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat259.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat260.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat261.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat262.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat263.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat264.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat265.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat266.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat267.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat268.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat269.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat270.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat271.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat272.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat273.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat288.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat125.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat237.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat486.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat407.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat25.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat255.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat244.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat144.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat256.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat229.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat153.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat232.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat110.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat290.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat231.gif" loading="lazy">
+    <img src="https://nukocities.neocities.org/nuko/sets/cat523.gif" loading="lazy">
+    <div id="daily-status-widget">
+        <h2 class="y2k-title">Cảm xúc hôm nay</h2>
+        <div id="status-display">
+            <div id="status-time">Cập nhật lúc: 15:23</div>
+            <div id="status-text">làm sao để trở nên xinh đẹp hơn nhỉ?</div>
+        </div>
+        <textarea id="status-input" placeholder="Nhập trạng thái hôm nay..." rows="4"></textarea>
+           <div>
+        <button onclick="saveStatus()">Lưu trạng thái</button>
+        <div>
+           <div>
+        
+        <div>
+           <div>
+              <div>
+              
+              
+              
+                 <div>
+                 
+           <div>
+              <div>
+              
+              
+              
+              
+              
+                 <div>
+        
+        
+             <div><div> <img alt="nyan cat" class="" src="https://doqmeat.com/!g/pix/nyancat.gif" style="" title="doqmeat.com protected by nyan cat" loading="lazy">
+       
+       
+          <div>
+       
+       
+       <div class="copyright-lower">
+             
+            Copyright © 2025 <a href="/">Xuan Nhi<https://www.facebook.com/xnhimeomeow/a> / coded with <i class="fa fa-heart heart" style="z-index:0;color :#c31b22"></i> by xnhi .<span id="Designed_by_www_bacsiwindows_com_" style="visibility: hidden"></span>
+        </div>
+    </div>
+</div>
+
+<!-- confetti svg (decor) -->
+<svg class="confetti" width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="10" cy="10" r="4" fill="#FF6BCB"/><circle cx="30" cy="20" r="3" fill="#7DD3FC"/><circle cx="50" cy="8" r="3" fill="#FFF27A"/><circle cx="80" cy="16" r="4" fill="#A7F3D0"/><circle cx="100" cy="10" r="3" fill="#FFD6A5"/>
+</svg>
+
+<script>
+/* Anonymous Cute Letters — client-only
+   - encode message into URL hash as: #msg=<base64url>|<theme>
+   - Basic profanity filter and length limit.
+   - No server calls. Sharing the link = sharing the message.
+*/
+
+// helpers for base64url (vẫn giữ lại vì có thể dùng cho mục đích khác hoặc nếu bạn muốn khôi phục chức năng sau này)
+function utf8_to_b64(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64_to_utf8(b64){ return decodeURIComponent(escape(atob(b64))); }
+function base64urlEncode(s){ return utf8_to_b64(s).replace(/=+$/,'').replace(/\+/g,'-').replace(/\//g,'_'); }
+function base64urlDecode(s){ s = s.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s += '='; return b64_to_utf8(s); }
+
+// Định nghĩa mảng PROFANITY (có thể thêm các từ cấm vào đây)
+const PROFANITY = []; // Ví dụ: ['đồ ngu', 'chửi bậy', 'từ cấm']
+
+// DOM elements
+const contentEl = document.getElementById('message');
+const fromEl = document.getElementById('from');
+const themesEl = document.getElementById('themes'); // Khôi phục
+const envelope = document.getElementById('envelope'); // Khôi phục
+const paperBody = document.getElementById('paperBody'); // Khôi phục
+const paperFrom = document.getElementById('paperFrom'); // Khôi phục
+const btnPreview = document.getElementById('btnPreview'); // Khôi phục
+
+// Các biến liên quan đến chức năng tạo/mở link đã bị xóa khỏi HTML, nên không cần tham chiếu ở đây nữa
+// const resultArea = document.getElementById('resultArea');
+// const shareLinkEl = document.getElementById('shareLink');
+// const btnCopy = document.getElementById('btnCopy');
+// const btnOpen = document.getElementById('btnOpen');
+// const btnResetLink = document.getElementById('btnResetLink');
+// const openLinkInput = document.getElementById('openLink');
+// const btnOpenLink = document.getElementById('btnOpenLink');
+
+const messageView = document.getElementById('messageView');
+const viewFrom = document.getElementById('viewFrom');
+const viewBody = document.getElementById('viewBody');
+const btnCopyText = document.getElementById('btnCopyText');
+const btnDownload = document.getElementById('btnDownload');
+
+const MAX_LEN = 1500;
+
+// theme styles
+const THEMES = {
+  pink: {paper:'#fff0f7', flap:'#ffd6f1', bodyColor:'#3b0a3a'},
+  blue: {paper:'#f0fbff', flap:'#bfefff', bodyColor:'#083344'},
+  mint: {paper:'#f0fff7', flap:'#c7f9e0', bodyColor:'#054f39'},
+  paper: {paper:'#fffaf0', flap:'#fff0d6', bodyColor:'#3b2b1f'}
+};
+
+// apply theme to envelope preview
+function applyTheme(t){
+  chosenTheme = t;
+  const theme = THEMES[t] || THEMES.pink;
+  if (envelope) {
+    envelope.style.background = theme.paper;
+    const flap = envelope.querySelector('.flap');
+    if (flap) {
+      flap.style.background = `linear-gradient(180deg, ${theme.flap}, #fff)`;
+    }
+  }
+  if (paperBody) {
+    paperBody.style.color = theme.bodyColor;
+  }
+  if (paperFrom) {
+    paperFrom.style.color = theme.bodyColor;
+  }
+  if (themesEl) {
+    Array.from(themesEl.querySelectorAll('[data-theme]')).forEach(b=> b.style.outline = b.dataset.theme===t ? '3px solid rgba(0,0,0,0.06)' : 'none');
+  }
+}
+
+// sanitize & filter profanity (simple)
+function sanitizeAndFilter(text){
+  text = text.replace(/<[^>]*>?/gm, '');
+  const regex = new RegExp(PROFANITY.map(w=> w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'gi');
+  text = text.replace(regex, match => '*'.repeat(Math.min(match.length, 4)));
+  if(text.length > MAX_LEN) text = text.slice(0, MAX_LEN) + '\n\n... (bị cắt do quá dài)';
+  return text.trim();
+}
+
+// copy helpers
+async function copyText(txt){
+  try{ await navigator.clipboard.writeText(txt); alert('Đã sao chép'); }
+  catch(e){ prompt('Sao chép thủ công:', txt); }
+}
+
+// download as txt
+function downloadText(filename, text){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
+  a.download = filename;
+  a.click();
+}
+
+// Events cho themesEl và btnPreview (đã khôi phục)
+if (themesEl) { themesEl.addEventListener('click', (ev)=>{ const b = ev.target.closest('[data-theme]'); if(b) applyTheme(b.dataset.theme); }); }
+if (btnPreview) {
+  btnPreview.addEventListener('click', ()=>{
+    const txt = sanitizeAndFilter(contentEl.value || '');
+    if (paperFrom) paperFrom.textContent = (fromEl.value || '').trim() || '—';
+    if (paperBody) paperBody.textContent = txt || 'Nội dung sẽ hiển thị ở đây khi bạn xem trước thư.'; // Cập nhật hướng dẫn
+    if (envelope) {
+      envelope.style.transform = 'scale(1.03)';
+      setTimeout(()=> envelope.style.transform = 'scale(1)', 180);
+    }
+  });
+}
+
+// Events cho các nút copy/download nội dung thư đã đọc (nếu có)
+if (btnCopyText) { btnCopyText.addEventListener('click', ()=> copyText(viewBody.textContent || '')); }
+if (btnDownload) { btnDownload.addEventListener('click', ()=> { const txt = (viewFrom.textContent ? viewFrom.textContent + "\n\n" : '') + (viewBody.textContent || ''); downloadText('letter.txt', txt); }); }
+
+// on load: chỉ áp dụng theme mặc định, không cố gắng mở thư từ hash nữa
+window.addEventListener('load', ()=> {
+  applyTheme('pink'); // Áp dụng theme mặc định khi tải trang
+  // Không còn chức năng tạo/mở link ẩn danh, nên không cần xử lý hash
+  // messageView.hidden = true; // Đảm bảo messageView ẩn khi tải trang
+});
+
+// hashchange listener cũng không cần thiết nữa
+window.addEventListener('hashchange', ()=> {
+  // messageView.hidden=true;
+});
+
+
+// Hiệu ứng sao băng
+function createShootingStar() {
+  const star = document.createElement('div');
+  star.className = 'shooting-star';
+  // Vị trí ngẫu nhiên từ phía trên bên trái
+  const startX = Math.random() * window.innerWidth * 0.6; // Bắt đầu từ 0% đến 60% chiều rộng
+  const startY = Math.random() * window.innerHeight * 0.2; // Bắt đầu từ 0% đến 20% chiều cao
+  star.style.left = startX + 'px';
+  star.style.top = startY + 'px';
+  document.body.appendChild(star);
+
+  // Xóa sao băng sau khi animation kết thúc
+  star.addEventListener('animationend', () => {
+    star.remove();
+  });
+}
+
+// Gọi hàm tạo sao băng mỗi 5 giây
+setInterval(createShootingStar, 5000);
+
+</script>
+</body>
+</html>
