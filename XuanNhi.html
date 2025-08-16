@@ -471,20 +471,13 @@ body {
                 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
 
                 const firebaseConfig = {
-                                      authDomain: "kristan-b04cc.firebaseapp.com",
-                    databaseURL: "https://kristan-b04cc-default-rtdb.firebaseio.com",
-                    projectId: "kristan-b04cc",
-                    storageBucket: "kristan-b04cc.appspot.com",
-                    messagingSenderId: "519771746844",
-                    appId: "1:519771746844:web:81f68ca679e35dda84a5d9",
-                    measurementId: "G-KSB1LL0VB8"
-                };
+                            
 
                 // Initialize Firebase
                 const app = initializeApp(firebaseConfig);
                 const db = getDatabase(app);
 
-                function saveStatus() {
+                function save
                     const content = document.getElementById("status-input").value.trim();
                     if (content === "") {
                         alert("Vui lòng nhập trạng thái trước khi lưu.");
@@ -909,3 +902,4 @@ setInterval(createShootingStar, 5000);
 </script>
 </body>
 </html>
+
